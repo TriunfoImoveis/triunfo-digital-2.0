@@ -1,14 +1,26 @@
-import { Flex, Text, VStack, Image, Button, Stack } from '@chakra-ui/react'
+import { Flex, VStack, Image, Button, Stack } from '@chakra-ui/react'
 
-
+import {SubmitHandler, useForm} from 'react-hook-form';
 import type { NextPage } from 'next'
 import { Input } from '../components/Form/input';
 import { Select } from '../components/Form/Select';
 
 const TriunfoLogoSrc = '/images/logo-triunfo.png';
 
+type SignInFormData = {
+  email: string;
+  password: string;
+  cargo: string;
+}
 
 const Home: NextPage = () => {
+  const {register, handleSubmit } = useForm<SignInFormData>();
+
+  const handleSignIn: SubmitHandler<SignInFormData> = (values) => {
+    console.log(values)
+
+  }
+
   return (
     <Flex
       w="100vw"
@@ -34,18 +46,19 @@ const Home: NextPage = () => {
         borderRadius={8}
         direction="column"
         mt={6}
+        onSubmit={handleSubmit(handleSignIn)}
       >
         <Stack spacing="4">
-         <Input name="email" label="E-mail" type="email" />
-         <Input name="password" label="Senha" type="password" />
+         <Input label="E-mail" type="email" {...register("email")} />
+         <Input label="Senha" type="password" {...register("password")} />
 
-         <Select name="cargo" label="Cargo" options={
+         <Select label="Cargo" options={
           [
             {label: 'Corretor', value: 'Corretor'},
             {label: 'Diretor', value: 'Diretor'},
             {label: 'Gerente', value: 'Gerente'},
           ]
-         }/>
+         } {...register("cargo")}/>
         </Stack>
 
 

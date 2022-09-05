@@ -1,4 +1,5 @@
 import { FormControl, FormLabel, Select as ChakraSelect, SelectProps as ChakraSelectProps } from "@chakra-ui/react";
+import { forwardRef, ForwardRefRenderFunction } from "react";
 
 interface Options {
   value: string;
@@ -9,7 +10,7 @@ interface SelectProps extends ChakraSelectProps{
   label?: string;
   options?: Options[]
 };
-export function Select({name, label, options, ...rest}: SelectProps) {
+const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectProps> = ({name, label, options, ...rest}, ref) => {
   return (
     <FormControl>
       { !!label && <FormLabel htmlFor={name} color="blue.900">{label}</FormLabel>}
@@ -24,6 +25,7 @@ export function Select({name, label, options, ...rest}: SelectProps) {
         }}
         size="lg"
         color="blue.900"
+        ref={ref}
         {...rest}
       >
         {options?.map(option => (
@@ -33,3 +35,5 @@ export function Select({name, label, options, ...rest}: SelectProps) {
     </FormControl>
   );
 }
+
+export const Select = forwardRef(SelectBase)
